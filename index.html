@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Дмитрий Королевский - Вайбкодинг, NFT, Telegram разработка">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Outfit:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <title>Дмитрий Королевский</title>
+  
+  <style>
+    /* ===== CSS Custom Properties ===== */
+    :root {
+      /* Colors - адаптировано под сине-розовый фон */
+      --bg-dark: #1a1d2e;
+      --bg-darker: #0f1119;
+      --accent-purple: #e89ac7;
+      --accent-indigo: #7b9fd9;
+      --accent-blue: #5a7fb8;
+      --accent-pink: #ff8fb3;
+      
+      /* Text Opacity */
+      --text-primary: rgba(255, 255, 255, 0.95);
+      --text-secondary: rgba(255, 255, 255, 0.65);
+      --text-tertiary: rgba(255, 255, 255, 0.35);
+      
+      /* Glass Effect */
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      
+      /* Spacing */
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 2rem;
+      --spacing-lg: 4rem;
+      
+      /* Animation Timing */
+      --duration-fast: 0.3s;
+      --duration-medium: 0.6s;
+      --duration-slow: 1s;
+    }
+    
+    /* ===== Reset & Base Styles ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      line-height: 1.6;
+      color: var(--text-secondary);
+      background: var(--bg-dark);
+      overflow-x: hidden;
+    }
+    
+    /* ===== Typography ===== */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    h1 { font-size: clamp(2.5rem, 8vw, 6rem); }
+    h2 { font-size: clamp(2rem, 6vw, 4rem); }
+    h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+    h4 { font-size: clamp(1.25rem, 3vw, 2rem); }
+    
+    code, pre {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    ul {
+      list-style: none;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-indigo));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* ===== Background Layers ===== */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+    
+    /* Background Image */
+    .bg-image {
+      z-index: 0;
+      background-image: url('bg.jpg?v=2');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+    
+    .bg-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(26, 29, 46, 0.2) 0%, rgba(15, 17, 25, 0.3) 100%);
+    }
+    
+    /* Gradient Overlay */
+    .bg-gradient {
+      z-index: 1;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 10, 15, 0.3) 0%,
+        rgba(17, 17, 24, 0.4) 100%
+      );
+    }
+    
+    /* Ambient Orbs */
+    .bg-orbs {
+      z-index: 2;
+    }
+    
+    .bg-orbs::before,
+    .bg-orbs::after {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.15;
+    }
+    
+    .bg-orbs::before {
+      top: -200px;
+      left: -200px;
+      background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
+    }
+    
+    .bg-orbs::after {
+      bottom: -200px;
+      right: -200px;
+      background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
+    }
+    
+    /* Aurora Bands */
+    .bg-aurora {
+      z-index: 2;
+    }
+    
+    .bg-aurora::before {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: -10%;
+      width: 120%;
+      height: 200px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(129, 140, 248, 0.1) 50%,
+        transparent 100%
+      );
+      filter: blur(60px);
+      transform: rotate(-5deg);
+    }
+    
+    /* Grain Texture */
+    .bg-grain {
+      z-index: 3;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' /%3E%3C/svg%3E");
+      opacity: 0.02;
+    }
+    
+    /* Scanlines */
+    .bg-scanlines {
+      z-index: 3;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.03) 0px,
+        transparent 1px,
+        transparent 2px
+      );
+      opacity: 0.04;
+    }
+    
+    /* Particles Container */
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    /* ===== Navigation ===== */
+    .navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-indigo));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-secondary);
+      transition: color var(--duration-fast);
+    }
+    
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+    
+    /* ===== Hero Section ===== */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .hero-title {
+      margin: 0 0 1rem 0;
+      background: linear-gradient(
+        135deg,
+        #a78bfa 0%,
+        #818cf8 25%,
+        #6366f1 50%,
+        #818cf8 75%,
+        #a78bfa 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-subtitle {
+      margin: 0;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: var(--text-secondary);
+    }
+    
+    /* ===== Content Sections ===== */
+    .content-section {
+      position: relative;
+      z-index: 10;
+      padding: 4rem 2rem;
+    }
+    
+    .section-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-content > h2 {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    /* ===== Glass Cards ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .glass-card {
+      position: relative;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
+      overflow: hidden;
+      transition: all var(--duration-fast);
+    }
+    
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(255,255,255,0.1) 0%, 
+        transparent 50%);
+      pointer-events: none;
+    }
+    
+    .glass-card:hover {
+      box-shadow: 0 0 40px rgba(163, 139, 250, 0.3);
+      border-color: rgba(163, 139, 250, 0.3);
+      transform: translateY(-4px);
+    }
+    
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card-content h3 {
+      margin-bottom: 1rem;
+    }
+    
+    /* ===== Profile Card ===== */
+    .profile-card {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+    
+    .profile-content {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .profile-avatar {
+      flex-shrink: 0;
+    }
+    
+    .avatar-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-indigo);
+      box-shadow: 0 0 30px rgba(123, 159, 217, 0.5);
+      object-fit: cover;
+    }
+    
+    .profile-info {
+      flex: 1;
+    }
+    
+    .profile-info h3 {
+      margin-bottom: 0.5rem;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+    
+    .profile-username {
+      color: var(--accent-indigo);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .profile-id {
+      color: var(--text-tertiary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .profile-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    
+    .stat-item-small {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    
+    .stat-item-small .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .stat-item-small .stat-value-small {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-pink);
+    }
+    
+    .quote-text {
+      font-style: italic;
+      color: var(--accent-pink);
+      font-size: 1.1rem;
+    }
+    
+    /* ===== Holographic Border ===== */
+    .holo-border {
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      padding: 2px;
+      background: conic-gradient(
+        from 0deg,
+        #ff0080, #ff8c00, #ffff00, #00ff00,
+        #00ffff, #0080ff, #8000ff, #ff0080
+      );
+      z-index: -1;
+    }
+    
+    .holo-border::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: var(--bg-dark);
+      border-radius: inherit;
+    }
+    
+    /* ===== UI Components ===== */
+    .chip {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      backdrop-filter: blur(10px);
+      margin-top: 1rem;
+    }
+    
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(163, 139, 250, 0.2);
+      border: 1px solid var(--accent-purple);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 1rem;
+    }
+    
+    /* ===== Buttons ===== */
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn-glass {
+      padding: 0.75rem 2rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all var(--duration-fast);
+    }
+    
+    .btn-glass:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(163, 139, 250, 0.3);
+    }
+    
+    .btn-primary {
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-indigo));
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--duration-fast);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(163, 139, 250, 0.4);
+    }
+    
+    /* ===== Stats Bar ===== */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      background: var(--glass-bg);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      margin: 2rem 0;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-indigo));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    /* ===== Timeline ===== */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, 
+        var(--accent-purple) 0%, 
+        var(--accent-indigo) 100%);
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    
+    .timeline-marker {
+      position: absolute;
+      left: -2.5rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      background: var(--accent-purple);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-purple);
+    }
+    
+    .timeline-content h4 {
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .timeline-content p {
+      color: var(--text-secondary);
+    }
+    
+    /* ===== Quote Block ===== */
+    .quote-block {
+      position: relative;
+      padding: 2rem;
+      margin: 2rem 0;
+      background: var(--glass-bg);
+      border-left: 3px solid var(--accent-purple);
+      backdrop-filter: blur(10px);
+      font-style: italic;
+      border-radius: 8px;
+    }
+    
+    .quote-block p {
+      margin: 0 0 1rem 0;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+    
+    .quote-block cite {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--text-tertiary);
+      font-style: normal;
+    }
+    
+    /* ===== Divider ===== */
+    .divider-iridescent {
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        #ff0080 20%,
+        #ff8c00 40%,
+        #00ff00 60%,
+        #0080ff 80%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      margin: 2rem 0;
+    }
+    
+    /* ===== Marquee ===== */
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      background: rgba(163, 139, 250, 0.05);
+      padding: 1rem 0;
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      margin: 4rem 0;
+    }
+    
+    .marquee-content {
+      display: inline-block;
+    }
+    
+    .marquee-content span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      letter-spacing: 0.2em;
+    }
+    
+    /* ===== 3D Cube ===== */
+    .scene-container {
+      display: flex;
+      justify-content: center;
+      margin: 3rem 0;
+    }
+    
+    .scene {
+      width: 200px;
+      height: 200px;
+      perspective: 1000px;
+    }
+    
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    
+    .cube-face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(163, 139, 250, 0.1);
+      border: 1px solid rgba(163, 139, 250, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .cube-face.front  { transform: translateZ(100px); }
+    .cube-face.back   { transform: rotateY(180deg) translateZ(100px); }
+    .cube-face.left   { transform: rotateY(-90deg) translateZ(100px); }
+    .cube-face.right  { transform: rotateY(90deg) translateZ(100px); }
+    .cube-face.top    { transform: rotateX(90deg) translateZ(100px); }
+    .cube-face.bottom { transform: rotateX(-90deg) translateZ(100px); }
+    
+    /* ===== 3D Floating Shapes ===== */
+    .floating-shapes {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .shape-3d {
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+    
+    /* Tetrahedron */
+    .tetrahedron {
+      width: 150px;
+      height: 150px;
+      top: 15%;
+      left: 10%;
+      animation: float-rotate-1 15s ease-in-out infinite, drift-1 20s ease-in-out infinite;
+    }
+    
+    .tetrahedron-face {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 75px solid transparent;
+      border-right: 75px solid transparent;
+      border-bottom: 130px solid rgba(232, 154, 199, 0.15);
+      backdrop-filter: blur(5px);
+      border-bottom-color: rgba(232, 154, 199, 0.15);
+    }
+    
+    .tetrahedron-face:nth-child(1) { transform: rotateY(0deg) translateZ(43px); }
+    .tetrahedron-face:nth-child(2) { transform: rotateY(120deg) translateZ(43px); }
+    .tetrahedron-face:nth-child(3) { transform: rotateY(240deg) translateZ(43px); }
+    .tetrahedron-face:nth-child(4) { transform: rotateX(90deg) translateZ(-43px); }
+    
+    /* Octahedron */
+    .octahedron {
+      width: 120px;
+      height: 120px;
+      top: 60%;
+      right: 15%;
+      animation: float-rotate-2 18s ease-in-out infinite, drift-2 25s ease-in-out infinite;
+    }
+    
+    .octahedron-face {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-bottom: 60px solid rgba(123, 159, 217, 0.15);
+      backdrop-filter: blur(5px);
+    }
+    
+    .octahedron-face:nth-child(1) { transform: rotateY(0deg) translateZ(42px); }
+    .octahedron-face:nth-child(2) { transform: rotateY(90deg) translateZ(42px); }
+    .octahedron-face:nth-child(3) { transform: rotateY(180deg) translateZ(42px); }
+    .octahedron-face:nth-child(4) { transform: rotateY(270deg) translateZ(42px); }
+    .octahedron-face:nth-child(5) { transform: rotateX(180deg) rotateY(0deg) translateZ(42px); }
+    .octahedron-face:nth-child(6) { transform: rotateX(180deg) rotateY(90deg) translateZ(42px); }
+    .octahedron-face:nth-child(7) { transform: rotateX(180deg) rotateY(180deg) translateZ(42px); }
+    .octahedron-face:nth-child(8) { transform: rotateX(180deg) rotateY(270deg) translateZ(42px); }
+    
+    /* Icosahedron (simplified as dodecahedron) */
+    .icosahedron {
+      width: 100px;
+      height: 100px;
+      top: 35%;
+      right: 25%;
+      animation: float-rotate-3 20s ease-in-out infinite, drift-3 30s ease-in-out infinite;
+    }
+    
+    .icosahedron-face {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 143, 179, 0.12);
+      border: 1px solid rgba(255, 143, 179, 0.25);
+      backdrop-filter: blur(5px);
+    }
+    
+    .icosahedron-face:nth-child(1) { transform: rotateY(0deg) translateZ(50px); }
+    .icosahedron-face:nth-child(2) { transform: rotateY(72deg) translateZ(50px); }
+    .icosahedron-face:nth-child(3) { transform: rotateY(144deg) translateZ(50px); }
+    .icosahedron-face:nth-child(4) { transform: rotateY(216deg) translateZ(50px); }
+    .icosahedron-face:nth-child(5) { transform: rotateY(288deg) translateZ(50px); }
+    .icosahedron-face:nth-child(6) { transform: rotateX(90deg) translateZ(50px); }
+    .icosahedron-face:nth-child(7) { transform: rotateX(-90deg) translateZ(50px); }
+    
+    /* Pyramid */
+    .pyramid {
+      width: 130px;
+      height: 130px;
+      bottom: 20%;
+      left: 20%;
+      animation: float-rotate-4 16s ease-in-out infinite, drift-4 22s ease-in-out infinite;
+    }
+    
+    .pyramid-face {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 65px solid transparent;
+      border-right: 65px solid transparent;
+      border-bottom: 113px solid rgba(163, 139, 250, 0.15);
+      backdrop-filter: blur(5px);
+    }
+    
+    .pyramid-face:nth-child(1) { transform: rotateY(0deg) translateZ(37px); }
+    .pyramid-face:nth-child(2) { transform: rotateY(90deg) translateZ(37px); }
+    .pyramid-face:nth-child(3) { transform: rotateY(180deg) translateZ(37px); }
+    .pyramid-face:nth-child(4) { transform: rotateY(270deg) translateZ(37px); }
+    
+    /* Torus (ring made of boxes) */
+    .torus {
+      width: 140px;
+      height: 140px;
+      top: 70%;
+      left: 60%;
+      animation: float-rotate-5 22s ease-in-out infinite, drift-5 28s ease-in-out infinite;
+    }
+    
+    .torus-segment {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(123, 159, 217, 0.15);
+      border: 1px solid rgba(123, 159, 217, 0.3);
+      backdrop-filter: blur(5px);
+    }
+    
+    /* ===== Loading Screen ===== */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.8s ease-out;
+      overflow: hidden;
+    }
+    
+    #loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loading-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+      position: relative;
+      z-index: 10;
+    }
+    
+    /* Loading screen background layers */
+    #loading-screen .bg-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    
+    #loading-screen .bg-image {
+      z-index: 0;
+      background-image: url('bg.jpg?v=2');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    
+    #loading-screen .bg-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(26, 29, 46, 0.4) 0%, rgba(15, 17, 25, 0.5) 100%);
+    }
+    
+    #loading-screen .bg-gradient {
+      z-index: 1;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 10, 15, 0.5) 0%,
+        rgba(17, 17, 24, 0.6) 100%
+      );
+    }
+    
+    #loading-screen .bg-orbs {
+      z-index: 2;
+    }
+    
+    #loading-screen .bg-orbs::before,
+    #loading-screen .bg-orbs::after {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.2;
+    }
+    
+    #loading-screen .bg-orbs::before {
+      top: -200px;
+      left: -200px;
+      background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
+    }
+    
+    #loading-screen .bg-orbs::after {
+      bottom: -200px;
+      right: -200px;
+      background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
+    }
+    
+    #loading-screen .floating-shapes {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid transparent;
+      border-top-color: var(--accent-purple);
+      border-right-color: var(--accent-indigo);
+      border-radius: 50%;
+    }
+    
+    .enter-button {
+      position: relative;
+      padding: 1.5rem 4rem;
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: 16px;
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(20px);
+      transition: all var(--duration-fast);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      overflow: hidden;
+      animation: button-breathe 3s ease-in-out infinite, button-glow 2s ease-in-out infinite;
+    }
+    
+    .enter-button::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      background: conic-gradient(
+        from 0deg,
+        var(--accent-pink),
+        var(--accent-indigo),
+        var(--accent-purple),
+        var(--accent-pink)
+      );
+      border-radius: 16px;
+      z-index: -1;
+      opacity: 0.6;
+      animation: rotate-border 4s linear infinite;
+    }
+    
+    .enter-button::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, 
+        rgba(232, 154, 199, 0.3) 0%, 
+        transparent 70%);
+      opacity: 0;
+      animation: pulse-inner 2s ease-in-out infinite;
+    }
+    
+    .enter-button:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 15px 60px rgba(163, 139, 250, 0.7);
+      border-color: var(--accent-indigo);
+    }
+    
+    .enter-button:hover::before {
+      opacity: 1;
+    }
+    
+    .enter-text {
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 20px rgba(232, 154, 199, 0.5);
+    }
+    
+    .enter-icon {
+      font-size: 1.5rem;
+      transition: transform var(--duration-fast);
+      animation: arrow-pulse 1.5s ease-in-out infinite;
+    }
+    
+    .enter-button:hover .enter-icon {
+      transform: translateX(8px);
+    }
+    
+    /* ===== Footer ===== */
+    .footer {
+      position: relative;
+      z-index: 10;
+      padding: 4rem 2rem 2rem;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--glass-border);
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+    }
+    
+    .footer-section h4 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    
+    .footer-section p {
+      color: var(--text-secondary);
+    }
+    
+    .footer-section ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .footer-section a {
+      color: var(--text-secondary);
+      transition: color var(--duration-fast);
+    }
+    
+    .footer-section a:hover {
+      color: var(--accent-purple);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-tertiary);
+      font-size: 0.875rem;
+    }
+    
+    /* ===== Scroll Reveal ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* ===== Particles ===== */
+    .particle {
+      position: absolute;
+      bottom: -10px;
+      background: rgba(163, 139, 250, 0.6);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(163, 139, 250, 0.8);
+      pointer-events: none;
+    }
+    
+    /* ===== Animations ===== */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    .float-1 { animation: float 7s ease-in-out infinite; }
+    .float-2 { animation: float 7s ease-in-out infinite 0.5s; }
+    .float-3 { animation: float 7s ease-in-out infinite 1s; }
+    
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .shimmer {
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { 
+        box-shadow: 0 0 10px rgba(163, 139, 250, 0.3);
+        opacity: 1;
+      }
+      50% { 
+        box-shadow: 0 0 20px rgba(163, 139, 250, 0.6);
+        opacity: 0.8;
+      }
+    }
+    
+    .pulse {
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    
+    @keyframes rotate-border {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .holo-border {
+      animation: rotate-border 6s linear infinite;
+    }
+    
+    @keyframes shimmer-divider {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    
+    .divider-iridescent {
+      animation: shimmer-divider 3s linear infinite;
+    }
+    
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    
+    .marquee-content {
+      animation: marquee-scroll 25s linear infinite;
+    }
+    
+    @keyframes rotate-cube {
+      0% { transform: rotateX(0deg) rotateY(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
+    
+    .cube {
+      animation: rotate-cube 12s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes button-breathe {
+      0%, 100% { 
+        transform: scale(1);
+      }
+      50% { 
+        transform: scale(1.03);
+      }
+    }
+    
+    @keyframes button-glow {
+      0%, 100% { 
+        box-shadow: 0 0 20px rgba(232, 154, 199, 0.4),
+                    0 0 40px rgba(123, 159, 217, 0.3);
+      }
+      50% { 
+        box-shadow: 0 0 40px rgba(232, 154, 199, 0.6),
+                    0 0 60px rgba(123, 159, 217, 0.5),
+                    0 0 80px rgba(163, 139, 250, 0.3);
+      }
+    }
+    
+    @keyframes pulse-inner {
+      0%, 100% { 
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      50% { 
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+    
+    @keyframes arrow-pulse {
+      0%, 100% { 
+        transform: translateX(0);
+        opacity: 1;
+      }
+      50% { 
+        transform: translateX(5px);
+        opacity: 0.7;
+      }
+    }
+    
+    @keyframes float-rotate-1 {
+      0%, 100% { 
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+      }
+      33% { 
+        transform: rotateX(120deg) rotateY(120deg) rotateZ(60deg);
+      }
+      66% { 
+        transform: rotateX(240deg) rotateY(240deg) rotateZ(120deg);
+      }
+    }
+    
+    @keyframes float-rotate-2 {
+      0%, 100% { 
+        transform: rotateX(45deg) rotateY(0deg) rotateZ(0deg);
+      }
+      50% { 
+        transform: rotateX(225deg) rotateY(180deg) rotateZ(180deg);
+      }
+    }
+    
+    @keyframes float-rotate-3 {
+      0%, 100% { 
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(45deg);
+      }
+      25% { 
+        transform: rotateX(90deg) rotateY(90deg) rotateZ(135deg);
+      }
+      50% { 
+        transform: rotateX(180deg) rotateY(180deg) rotateZ(225deg);
+      }
+      75% { 
+        transform: rotateX(270deg) rotateY(270deg) rotateZ(315deg);
+      }
+    }
+    
+    @keyframes float-rotate-4 {
+      0%, 100% { 
+        transform: rotateX(30deg) rotateY(0deg) rotateZ(0deg);
+      }
+      50% { 
+        transform: rotateX(210deg) rotateY(360deg) rotateZ(180deg);
+      }
+    }
+    
+    @keyframes float-rotate-5 {
+      0%, 100% { 
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+      }
+      33% { 
+        transform: rotateX(60deg) rotateY(120deg) rotateZ(90deg);
+      }
+      66% { 
+        transform: rotateX(120deg) rotateY(240deg) rotateZ(180deg);
+      }
+    }
+    
+    @keyframes drift-1 {
+      0%, 100% { 
+        transform: translate(0, 0);
+      }
+      25% { 
+        transform: translate(30px, -20px);
+      }
+      50% { 
+        transform: translate(-20px, 30px);
+      }
+      75% { 
+        transform: translate(40px, 10px);
+      }
+    }
+    
+    @keyframes drift-2 {
+      0%, 100% { 
+        transform: translate(0, 0);
+      }
+      33% { 
+        transform: translate(-40px, 25px);
+      }
+      66% { 
+        transform: translate(25px, -30px);
+      }
+    }
+    
+    @keyframes drift-3 {
+      0%, 100% { 
+        transform: translate(0, 0);
+      }
+      20% { 
+        transform: translate(20px, 30px);
+      }
+      40% { 
+        transform: translate(-30px, -20px);
+      }
+      60% { 
+        transform: translate(35px, -25px);
+      }
+      80% { 
+        transform: translate(-25px, 35px);
+      }
+    }
+    
+    @keyframes drift-4 {
+      0%, 100% { 
+        transform: translate(0, 0);
+      }
+      50% { 
+        transform: translate(-35px, -40px);
+      }
+    }
+    
+    @keyframes drift-5 {
+      0%, 100% { 
+        transform: translate(0, 0);
+      }
+      25% { 
+        transform: translate(45px, -15px);
+      }
+      50% { 
+        transform: translate(-30px, 40px);
+      }
+      75% { 
+        transform: translate(20px, -35px);
+      }
+    }
+    
+    @keyframes float-up {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(50px);
+        opacity: 0;
+      }
+    }
+    
+    .particle {
+      animation: float-up linear infinite;
+    }
+    
+    /* ===== Responsive Design ===== */
+    @media (max-width: 767px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .glass-card {
+        padding: 1.5rem;
+      }
+      
+      .scene {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .cube-face {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .cube-face.front, .cube-face.back { transform: translateZ(60px); }
+      .cube-face.left { transform: rotateY(-90deg) translateZ(60px); }
+      .cube-face.right { transform: rotateY(90deg) translateZ(60px); }
+      .cube-face.top { transform: rotateX(90deg) translateZ(60px); }
+      .cube-face.bottom { transform: rotateX(-90deg) translateZ(60px); }
+      .cube-face.back { transform: rotateY(180deg) translateZ(60px); }
+      
+      .particle:nth-child(n+20) {
+        display: none;
+      }
+      
+      #loading-screen .floating-shapes .shape-3d {
+        display: none;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .button-group button {
+        width: 100%;
+      }
+      
+      .profile-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .profile-stats {
+        justify-content: center;
+      }
+    }
+    
+      .avatar-img {
+        width: 120px;
+        height: 120px;
+      }
+    
+    
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <!-- Background layers for loading screen -->
+    <div class="bg-layer bg-image"></div>
+    <div class="bg-layer bg-gradient"></div>
+    <div class="bg-layer bg-orbs"></div>
+    
+    <!-- Floating 3D Shapes on loading screen -->
+    <div class="floating-shapes">
+      <!-- Tetrahedron -->
+      <div class="shape-3d tetrahedron">
+        <div class="tetrahedron-face"></div>
+        <div class="tetrahedron-face"></div>
+        <div class="tetrahedron-face"></div>
+        <div class="tetrahedron-face"></div>
+      </div>
+      
+      <!-- Octahedron -->
+      <div class="shape-3d octahedron">
+        <div class="octahedron-face"></div>
+        <div class="octahedron-face"></div>
+        <div class="octahedron-face"></div>
+        <div class="octahedron-face"></div>
+        <div class="octahedron-face"></div>
+        <div class="octahedron-face"></div>
+        <div class="octahedron-face"></div>
+        <div class="octahedron-face"></div>
+      </div>
+      
+      <!-- Icosahedron -->
+      <div class="shape-3d icosahedron">
+        <div class="icosahedron-face"></div>
+        <div class="icosahedron-face"></div>
+        <div class="icosahedron-face"></div>
+        <div class="icosahedron-face"></div>
+        <div class="icosahedron-face"></div>
+        <div class="icosahedron-face"></div>
+        <div class="icosahedron-face"></div>
+      </div>
+      
+      <!-- Pyramid -->
+      <div class="shape-3d pyramid">
+        <div class="pyramid-face"></div>
+        <div class="pyramid-face"></div>
+        <div class="pyramid-face"></div>
+        <div class="pyramid-face"></div>
+      </div>
+      
+      <!-- Torus -->
+      <div class="shape-3d torus">
+        <div class="torus-segment" style="transform: rotateY(0deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(30deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(60deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(90deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(120deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(150deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(180deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(210deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(240deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(270deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(300deg) translateZ(60px);"></div>
+        <div class="torus-segment" style="transform: rotateY(330deg) translateZ(60px);"></div>
+      </div>
+    </div>
+    
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <button id="enter-btn" class="enter-button">
+        <span class="enter-text">Войти</span>
+        <span class="enter-icon">→</span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+  
+  <!-- Background Layers -->
+  <div class="bg-layer bg-image"></div>
+  <div class="bg-layer bg-gradient"></div>
+  <div class="bg-layer bg-orbs"></div>
+  <div class="bg-layer bg-aurora"></div>
+  <div class="bg-layer bg-grain"></div>
+  <div class="bg-layer bg-scanlines"></div>
+  <div id="particles"></div>
+  
+  <!-- Navigation -->
+  <header>
+    <nav class="navigation">
+      <div class="nav-logo">DK</div>
+      <ul class="nav-links">
+        <li><a href="#home">Главная</a></li>
+        <li><a href="#about">Обо мне</a></li>
+        <li><a href="#journey">Путь</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+      <h1 class="hero-title shimmer">Дмитрий Королевский</h1>
+      <p class="hero-subtitle">1.5 грамма с айфона</p>
+    </section>
+    
+    <!-- About Section -->
+    <section class="content-section" id="about">
+      <div class="divider-iridescent"></div>
+      
+      <div class="section-content">
+        <h2 class="shimmer reveal">Обо мне</h2>
+        
+        <!-- Profile Card -->
+        <div class="glass-card profile-card float-1 reveal">
+          <div class="holo-border"></div>
+          <div class="card-content profile-content">
+            <div class="profile-avatar">
+              <img src="avatar.jpg" alt="Дмитрий Королевский" class="avatar-img">
+            </div>
+            <div class="profile-info">
+              <h3>Дмитрий Королевский</h3>
+              <p class="profile-username">@DmitriyyXVII</p>
+              <p class="profile-id">ID: 6930148555</p>
+              <div class="profile-stats">
+                <div class="stat-item-small">
+                  <span class="stat-label">Возраст</span>
+                  <span class="stat-value-small">16</span>
+                </div>
+                <div class="stat-item-small">
+                  <span class="stat-label">Локация</span>
+                  <span class="stat-value-small">Россия</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="cards-grid">
+          <div class="glass-card float-2 reveal">
+            <div class="card-content">
+              <h3>Telegram канал</h3>
+              <p>@ShardBio — 8.5K подписчиков Нихуя не значит</p>
+              <a href="https://t.me/ShardBio" target="_blank" class="btn-glass" style="margin-top: 1rem; display: inline-block;">Перейти в канал</a>
+            </div>
+          </div>
+          
+          <div class="glass-card float-3 reveal">
+            <div class="card-content">
+              <h3>Чем занимаюсь</h3>
+              <p>Увлекаюсь рынком нфт в тг, в целом за все темы с телегой, играю в доту, пишу сайты, приложения, тг-боты</p>
+              <span class="tag">Crypto</span>
+              <span class="tag">NFT</span>
+              <span class="tag">Coding</span>
+            </div>
+          </div>
+          
+          <div class="glass-card float-1 reveal">
+            <div class="card-content">
+              <h3>XVII</h3>
+              <p class="quote-text">"Чем больше денег, тем мне больше нравится крипта"</p>
+              <p>Цель: жить просто в кайф</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Journey Section -->
+    <section class="content-section" id="journey">
+      <div class="divider-iridescent"></div>
+      
+      <div class="section-content">
+        <h2 class="shimmer reveal">Мой путь</h2>
+        
+        <!-- Timeline -->
+        <div class="timeline reveal">
+          <div class="timeline-item">
+            <div class="timeline-marker pulse"></div>
+            <div class="timeline-content">
+              <h4>Лето 2025 — Приятный момент</h4>
+              <p>Поднял неплохие бабки на NFT в Telegram Это был мой главный успех</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker pulse"></div>
+            <div class="timeline-content">
+              <h4>Осень 2025 — Пиздец</h4>
+              <p>Рынок NFT в Telegram обвалился Ненавижу осень 2026 года</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker pulse"></div>
+            <div class="timeline-content">
+              <h4>Сейчас — Стабильность</h4>
+              <p>Продолжаю кодить, троллиться и искать новые возможности в тг</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Quote Block -->
+        <blockquote class="quote-block reveal">
+          <p>"Мешая с алкоголем всё самое злое, малыш, давай позвоним врачу
+Снова кричишь во сне, я держу тебя крепко, и опять не сплю этой ночью"</p>
+          <cite>— Дмитрий Королевский</cite>
+        </blockquote>
+        
+        <!-- 3D Cube -->
+        <div class="scene-container reveal">
+          <div class="scene">
+            <div class="cube">
+              <div class="cube-face front"></div>
+              <div class="cube-face back"></div>
+              <div class="cube-face left"></div>
+              <div class="cube-face right"></div>
+              <div class="cube-face top"></div>
+              <div class="cube-face bottom"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Marquee -->
+    <div class="marquee">
+      <div class="marquee-content">
+        • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+        <span>ВАЙБКОДИНГ • NFT • TELEGRAM • CRYPTO • DOTA 2 • ТРОЛЛИНГ • </span>
+      </div>
+    </div>
+    
+    <!-- Services Section -->
+    <section class="content-section" id="services">
+      <div class="divider-iridescent"></div>
+      
+      <div class="section-content">
+        <h2 class="shimmer reveal">Услуги</h2>
+        
+        <div class="cards-grid">
+          <div class="glass-card float-1 reveal">
+            <div class="card-content">
+              <h3>Разработка сайтов</h3>
+              <p>Создаю современные веб-сайты с уникальным дизайном и анимациями</p>
+              <span class="chip">Web Dev</span>
+            </div>
+          </div>
+          
+          <div class="glass-card float-2 reveal">
+            <div class="card-content">
+              <h3>Telegram боты</h3>
+              <p>Разработка ботов для Telegram с любым функционалом</p>
+              <span class="chip">Bots</span>
+            </div>
+          </div>
+          
+          <div class="glass-card float-3 reveal">
+            <div class="card-content">
+              <h3>Приложения</h3>
+              <p>Создание приложений и автоматизация процессов</p>
+              <span class="chip">Apps</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Stats Bar -->
+        <div class="stats-bar reveal">
+          <div class="stat-item">
+            <div class="stat-value">8.5K</div>
+            <div class="stat-label">Подписчиков</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">16</div>
+            <div class="stat-label">Лет</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">∞</div>
+            <div class="stat-label">XVII</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="content-section" id="contact">
+      <div class="divider-iridescent"></div>
+      
+      <div class="section-content">
+        <h2 class="shimmer reveal">Связаться</h2>
+        
+        <div class="glass-card float-1 reveal">
+          <div class="card-content">
+            <h3>Контакты</h3>
+            <p>По всем вопросам пишите в Telegram</p>
+            <div class="button-group">
+              <a href="https://t.me/DmitriyyXVII" target="_blank" class="btn-primary">Написать в Telegram</a>
+              <a href="https://t.me/ShardBio" target="_blank" class="btn-glass">Мой канал</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Дмитрий Королевский</h4>
+        <p>Вайбкодинг • NFT • Telegram</p>
+      </div>
+      <div class="footer-section">
+        <h4>Навигация</h4>
+        <ul>
+          <li><a href="#home">Главная</a></li>
+          <li><a href="#about">Обо мне</a></li>
+          <li><a href="#journey">Путь</a></li>
+          <li><a href="#services">Услуги</a></li>
+          <li><a href="#contact">Контакты</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="https://t.me/DmitriyyXVII" target="_blank">Telegram</a></li>
+          <li><a href="https://t.me/ShardBio" target="_blank">Канал @ShardBio</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Дмитрий Королевский Жить в кайф + деньги</p>
+    </div>
+  </footer>
+  
+  <script>
+    // ===== Particle System =====
+    function createParticleSystem() {
+      try {
+        const container = document.getElementById('particles');
+        if (!container) return;
+        
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          
+          const size = Math.random() * 3 + 1;
+          const left = Math.random() * 100;
+          const duration = Math.random() * 10 + 15;
+          const delay = Math.random() * 5;
+          
+          particle.style.cssText = `
+            left: ${left}%;
+            width: ${size}px;
+            height: ${size}px;
+            animation-duration: ${duration}s;
+            animation-delay: ${delay}s;
+          `;
+          
+          container.appendChild(particle);
+        }
+      } catch (error) {
+        console.warn('Particle system failed to initialize:', error);
+      }
+    }
+    
+    // ===== Scroll Reveal =====
+    function initScrollReveal() {
+      try {
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+              if (entry.isIntersecting) {
+                setTimeout(() => {
+                  entry.target.classList.add('revealed');
+                }, index * 100);
+                
+                observer.unobserve(entry.target);
+              }
+            });
+          }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+          });
+          
+          revealElements.forEach(el => observer.observe(el));
+        } else {
+          revealElements.forEach(el => {
+            el.classList.add('revealed');
+          });
+        }
+      } catch (error) {
+        console.warn('Scroll reveal failed to initialize:', error);
+      }
+    }
+    
+    // ===== Loading Screen =====
+    function initLoadingScreen() {
+      const loadingScreen = document.getElementById('loading-screen');
+      const enterBtn = document.getElementById('enter-btn');
+      const bgMusic = document.getElementById('bg-music');
+      
+      if (!loadingScreen || !enterBtn) return;
+      
+      // Hide spinner after page loads
+      window.addEventListener('load', () => {
+        const spinner = loadingScreen.querySelector('.spinner');
+        if (spinner) {
+          spinner.style.display = 'none';
+        }
+      });
+      
+      // Enter button click handler
+      enterBtn.addEventListener('click', () => {
+        // Start music
+        if (bgMusic) {
+          bgMusic.volume = 0.3; // Set volume to 30%
+          bgMusic.play().catch(err => {
+            console.warn('Music autoplay failed:', err);
+          });
+        }
+        
+        // Fade out loading screen
+        loadingScreen.classList.add('fade-out');
+        
+        setTimeout(() => {
+          loadingScreen.remove();
+        }, 800);
+      });
+    }
+    
+    // ===== Smooth Scroll =====
+    function initSmoothScroll() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    }
+    
+    // ===== Initialize Everything =====
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticleSystem();
+      initScrollReveal();
+      initSmoothScroll();
+    });
+    
+    initLoadingScreen();
+  </script>
+</body>
+</html>
